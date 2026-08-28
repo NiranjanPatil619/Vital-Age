@@ -1,0 +1,36 @@
+# Data files
+data/raw/
+data/interim/
+data/processed/
+*.csv
+
+# Model artifacts
+models/*.pkl
+models/*.h5
+models/*.json
+!models/fusion_weights.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+*.env
