@@ -1,1 +1,58 @@
-# VitalAge Configuration
+# VitalAge — Preprocessing & EDA Configuration
+
+paths:
+  raw_data: data/raw/blood_age_mega_raw.csv
+  interim_data: data/interim
+  processed_data: data/processed/bioage_final_clean.csv
+  model_ready: data/processed/bioage_model_ready.csv
+  figures: reports/figures
+
+columns:
+  target: Age
+  identifiers: [SEQN, CYCLE]
+  phenoage_core:
+    - LBXSAL      # Albumin (g/dL)
+    - LBXSCR      # Creatinine (mg/dL)
+    - LBXGLU      # Fasting glucose (mg/dL)
+    - CRP         # C-reactive protein (mg/L)
+    - LBXLYPCT    # Lymphocyte percent (%)
+    - LBXMCVSI    # Mean cell volume (fL)
+    - LBXRDW      # Red cell distribution width (%)
+    - LBXSAPSI    # Alkaline phosphatase (U/L)
+    - LBXWBCSI    # White blood cell count (1000 cells/uL)
+  secondary:
+    - LBXGH       # HbA1c (%)
+    - LBDLDL      # LDL cholesterol (mg/dL)
+    - LBDHDD      # HDL cholesterol (mg/dL)
+    - LBXTR       # Triglycerides (mg/dL)
+    - LBXTC       # Total cholesterol (mg/dL)
+  drop_high_missing:  # columns >60% missing — not usable
+    - LBXMAGN     # 93.5% missing
+    - LBXNRBC     # 81.8% missing
+    - LBDLDL      # 70.3% missing (also moved to high-missing)
+    - LBXTR       # 69.9% missing (also moved to high-missing)
+    - LBDBANO     # 65.7% missing
+  drop_duplicate:  # alt-codes of same measurement — keep the primary
+    - LBXSCH      # alt-code of total cholesterol (keep LBXTC)
+    - LBXSGL      # alt-code of glucose (keep LBXGLU)
+
+age:
+  top_code_ceiling: 80  # NHANES caps age at 80 in most cycles; spike of 3635 at exactly 80
+
+missingness:
+  max_column_pct: 60  # drop columns with >60% missing before row filtering
+
+outlier_ranges:
+  # Biological plausible ranges (min, max) — used for clipping
+  LBXSAL: [1.5, 5.5]        # Albumin g/dL
+  LBXSCR: [0.2, 5.0]        # Creatinine mg/dL
+  LBXGLU: [40, 500]         # Fasting glucose mg/dL
+  CRP: [0.01, 200]          # CRP mg/L
+  LBXLYPCT: [2, 80]         # Lymphocyte %
+  LBXMCVSI: [50, 120]       # MCV fL
+  LBXRDW: [8, 25]           # RDW %
+  LBXSAPSI: [10, 500]       # Alkaline phosphatase U/L
+  LBXWBCSI: [1, 50]         # WBC 1000 cells/uL
+  LBXGH: [2, 15]            # HbA1c %
+  LBDHDD: [5, 150]          # HDL mg/dL
+  LBXTC: [50, 500]          # Total cholesterol mg/dL
