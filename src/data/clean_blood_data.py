@@ -46,24 +46,23 @@ def select_columns(df: pd.DataFrame, config: dict) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
-# Age top-coding
+# Age filtering
 # ---------------------------------------------------------------------------
 
-def flag_topcoded_age(df: pd.DataFrame, ceiling: int = 80) -> pd.DataFrame:
-    """Add boolean column `age_topcoded` where Age == ceiling."""
-    df = df.copy()
-    df["age_topcoded"] = df["Age"] == ceiling
-    n_flagged = df["age_topcoded"].sum()
-    print(f"  [topcode] Flagged {n_flagged} rows with Age == {ceiling}")
-    return df
+def filter_age_range(df: pd.DataFrame, min_age: int = 18, max_age: int = 80) -> pd.DataFrame:
+    """Filter to only include rows within the specified age range (inclusive).
 
-
-def drop_topcoded_age(df: pd.DataFrame, ceiling: int = 80) -> pd.DataFrame:
-    """Drop rows where Age equals the top-code ceiling."""
+    Parameters
+    ----------
+    min_age : int
+        Minimum age to include (default 18).
+    max_age : int
+        Maximum age to include (default 80).
+    """
     before = len(df)
-    df = df[df["Age"] != ceiling].copy()
+    df = df[(df["Age"] >= min_age) & (df["Age"] <= max_age)].copy()
     dropped = before - len(df)
-    print(f"  [topcode] Dropped {dropped} top-coded rows (Age == {ceiling})")
+    print(f"  [age] Filtered to ages {min_age}-{max_age}: dropped {dropped} rows, kept {len(df)}")
     return df
 
 
@@ -129,23 +128,22 @@ def run_cleaning_pipeline(
     log["after_column_selection"] = df.shape
     log["kept_columns"] = list(df.columns)
     if verbose:
-        print(f"[2/6] After column selection: {df.shape[0]} rows x {df.shape[1]} cols")
+        print(f"[2/7] After column selection: {df.shape[0]} rows x {df.shape[1]} cols")
         print(f"       Kept: {list(df.columns)}")
 
-    # 3. Age top-coding
-    ceiling = config["age"]["top_code_ceiling"]
-    df = flag_topcoded_age(df, ceiling=ceiling)
-    log["top_code_ceiling"] = ceiling
-    log["topcoded_count"] = int(df["age_topcoded"].sum())
-    if drop_topcoded:
-        df = drop_topcoded_age(df, ceiling=ceiling)
-        log["after_topcode_drop"] = len(df)
+    # 3. Age range filter
+    min_age = config["age"].get("min_age", 18)
+    max_age = config["age"].get("max_age", 80)
+    df = filter_age_range(df, min_age=min_age, max_age=max_age)
+    log["min_age"] = min_age
+    log["max_age"] = max_age
+    log["after_age_filter"] = len(df)
 
     # 4. Outlier clipping
     outlier_ranges = config.get("outlier_ranges", {})
     if outlier_ranges:
         if verbose:
-            print("[3/6] Clipping outliers...")
+            print("[4/7] Clipping outliers...")
         df = clip_outliers(df, outlier_ranges)
 
     # 5. Drop rows with missing values in the remaining columns (complete-case)
@@ -156,14 +154,10 @@ def run_cleaning_pipeline(
     log["after_dropna"] = len(df)
     log["rows_dropped_missing"] = dropped
     if verbose:
-        print(f"[4/6] Dropped {dropped} rows with missing values")
-        print(f"[5/6] Complete-case shape: {df.shape}")
+        print(f"[5/7] Dropped {dropped} rows with missing values")
+        print(f"[6/7] Complete-case shape: {df.shape}")
 
-    # 6. Drop the age_topcoded helper column
-    if "age_topcoded" in df.columns:
-        df = df.drop(columns=["age_topcoded"])
-
-    # 7. Export
+    # 6. Export
     from .load_data import _resolve_path
     base = config.get("_base_dir", Path("."))
     out_path = _resolve_path(config["paths"]["processed_data"], base)
@@ -171,6 +165,6 @@ def run_cleaning_pipeline(
     df.to_csv(out_path, index=False)
     log["output_path"] = str(out_path)
     if verbose:
-        print(f"[6/6] Saved clean data to {out_path} ({df.shape[0]} rows x {df.shape[1]} cols)")
+        print(f"[7/7] Saved clean data to {out_path} ({df.shape[0]} rows x {df.shape[1]} cols)")
 
     return df, log

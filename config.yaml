@@ -38,6 +38,8 @@ columns:
 
 age:
   top_code_ceiling: 80  # NHANES caps age at 80 in most cycles; spike of 3635 at exactly 80
+  min_age: 18           # Minimum age to include (drop minors)
+  max_age: 80           # Maximum age to include (drop over-80 outliers)
 
 missingness:
   max_column_pct: 60  # drop columns with >60% missing before row filtering
