@@ -1,0 +1,27 @@
+{
+    "model": "XGBoost Tuned",
+    "dataset_rows": 22094,
+    "train_rows": 15465,
+    "test_rows": 6629,
+    "MAE": 8.496437969745815,
+    "RMSE": 11.594657700235368,
+    "R2": 0.6613896480859562,
+    "Pearson_r": 0.8133655765200756,
+    "CV_MAE": 8.749905525346886,
+    "Mean_BioAge_Gap": -0.07155070777463776,
+    "Median_BioAge_Gap": 0.24430084228515625,
+    "Gap_MAE": 8.496437969745815,
+    "Calibration_Slope": 0.6718845982467647,
+    "Calibration_Intercept": 13.94430777055648,
+    "Best_Parameters": {
+        "subsample": 0.7,
+        "reg_lambda": 5,
+        "reg_alpha": 0.01,
+        "n_estimators": 1500,
+        "min_child_weight": 7,
+        "max_depth": 7,
+        "learning_rate": 0.05,
+        "gamma": 0.1,
+        "colsample_bytree": 0.7
+    }
+}
