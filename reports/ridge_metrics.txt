@@ -1,0 +1,11 @@
+VitalAge Ridge Regression
+=========================
+
+MAE: 12.508026 years
+RMSE: 15.230900 years
+R2: 0.415701
+Pearson r: 0.645056
+Mean BioAge Gap: 0.020315
+Median BioAge Gap: 1.511461
+Calibration slope: 0.403276
+Calibration intercept: 25.510120
