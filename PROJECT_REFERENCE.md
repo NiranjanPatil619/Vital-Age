@@ -176,15 +176,28 @@ log_CRP, log_LBXSAPSI, log_LBXWBCSI, log_LBXGH, age_group
 
 ## 6. What Needs to Be Built Next (Future Features)
 
-### Priority 1: Model Training (notebooks/blood/05_model_comparison.ipynb)
-- [ ] Baseline: PhenoAge formula (weighted linear combination)
-- [ ] Ridge / Lasso regression
-- [ ] Random Forest
-- [ ] XGBoost / LightGBM
-- [ ] Neural network (optional)
-- [ ] 5-fold cross-validation
-- [ ] Metrics: MAE, RMSE, R² for age prediction
-- [ ] BioAge Gap computation
+### Priority 1: Model Training (notebooks/blood/05_model_comparison.ipynb) ✅ DONE
+- [x] Baseline: PhenoAge formula (MAE: 7.19 years, R²: 0.751) **← Best (includes Age as input)**
+- [x] Ridge regression (MAE: 12.9 years)
+- [x] ElasticNet regression (MAE: 13.0 years)
+- [x] Random Forest (MAE: 9.9 years)
+- [x] XGBoost (MAE: 9.6 years) **← Best ML-only model**
+- [x] LightGBM (MAE: 9.7 years)
+- [x] 5-fold cross-validation
+- [x] Metrics: MAE, RMSE, R² for age prediction
+- [x] Feature importance chart (reports/figures/16_feature_importance.png)
+
+**Results Summary:**
+| Model | MAE (years) | RMSE | R² |
+|-------|-------------|------|-----|
+| PhenoAge Formula | 7.19 | 9.24 | 0.751 |
+| XGBoost | 9.55 | 12.18 | 0.567 |
+| LightGBM | 9.66 | 12.27 | 0.560 |
+| Random Forest | 9.88 | 12.46 | 0.547 |
+| Ridge | 12.87 | 15.55 | 0.294 |
+| ElasticNet | 12.99 | 15.58 | 0.292 |
+
+**Note:** PhenoAge uses Chronological Age as an input feature, which is why it outperforms ML models. ML models only see blood biomarkers.
 
 ### Priority 2: Model Explainability (src/explainability/)
 - [ ] SHAP values for feature importance

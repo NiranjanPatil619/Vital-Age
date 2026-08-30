@@ -1,8 +1,9 @@
-# # Data files
-# data/raw/
-# data/interim/
-# data/processed/
-# *.csv
+# Data files
+data/raw/
+data/interim/
+data/processed/
+*.csv
+*.xpt
 
 # Model artifacts
 models/*.pkl
