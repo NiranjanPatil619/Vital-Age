@@ -1,0 +1,2 @@
+RandomForest MAE 7.5182 RMSE 9.5716 R2 0.7403 r 0.8613 CV 7.5182+/-0.0000
+Dataset test2_mae67_training_data.csv (59641, 78) | 77 feats

@@ -1,0 +1,7 @@
+Best model: XGB (new)
+Path: /home/kundanjangale/Vital-Age/model/xgboost/xgb_model.pkl
+MAE 6.6736 R2 0.7912 RMSE 8.5831
+    Model                                                           Path      MAE     RMSE       R2  Pearson_r  Gap_mean   Gap_SD  N_test
+XGB (new)      /home/kundanjangale/Vital-Age/model/xgboost/xgb_model.pkl 6.673611 8.583053 0.791191   0.889534 -0.006151 8.583051   11929
+LGB (new)     /home/kundanjangale/Vital-Age/model/lightgbm/lgb_model.pkl 6.708826 8.612028 0.789779   0.888741  0.008907 8.612023   11929
+ RF (new) /home/kundanjangale/Vital-Age/model/random_forest/rf_model.pkl 7.518249 9.571582 0.740323   0.861288  0.014499 9.571571   11929

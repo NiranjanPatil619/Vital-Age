@@ -1,0 +1,3 @@
+XGBoost MAE 6.6736 RMSE 8.5831 R2 0.7912 r 0.8895 CV 6.7496+/-0.0656
+Params {'n_estimators': 600, 'max_depth': 6, 'learning_rate': 0.04, 'subsample': 0.8, 'colsample_bytree': 0.8, 'reg_alpha': 0.1, 'reg_lambda': 1.0, 'random_state': 42, 'verbosity': 0, 'tree_method': 'hist', 'device': 'cuda'}
+Dataset test2_mae67_training_data.csv (59641, 78)
